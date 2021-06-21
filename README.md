@@ -11,9 +11,12 @@ you) and cWebVoiceControl (the browser listens to you) in their two respective
 .pkg files, and their client-side JavaScript counterparts: WebSpeechControl.js
 and WebVoiceControl.js.
 
-The sample "In the bar" view lets you test out the interface - it makes use of
+The sample "In the bar" view lets you test out the interface.  It makes use of
 the cOrderParser class, which is a moron-level bit of AI (well, how bright do
 you have to be to work behind a bar? <g>  Not really a challenger to Jarvis or
-SkyNet I'm afraid!) - it thinks gin and tonic are two separate drinks, FFS! ;-)
+SkyNet, I'm afraid!) - it thinks gin and tonic are two separate drinks! ;-)
+
+It offers a choice of bartenders (different in the different browsers),
+although for the best bar experience I'd stick to the English speakers! ;-)
 
 Mike

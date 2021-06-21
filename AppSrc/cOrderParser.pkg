@@ -60,6 +60,8 @@ Class cOrderParser is a cObject
         Move "wine"         to asDrinks[26]
         Move "tonic"        to asDrinks[27]
         Move "ginger"       to asDrinks[28]
+        Move "whiskies"     to asDrinks[29]
+        Move "rosé"         to asDrinks[30]
         
         Move 3.80           to anPrices[0]
         Move 0              to anPrices[1]
@@ -90,6 +92,8 @@ Class cOrderParser is a cObject
         Move 4.10           to anPrices[26]
         Move 0.80           to anPrices[27]
         Move 0.85           to anPrices[28]
+        Move 5.90           to anPrices[29]
+        Move 4.10           to anPrices[30]
         
         Set pasDrinks to asDrinks
         Set panPrices to anPrices
@@ -164,6 +168,16 @@ Class cOrderParser is a cObject
                 Move (SearchArray(sItem, asDrinks)) to iIdx
                 
                 If (iIdx > -1) Begin
+                    
+                    // Wind needs colour!
+                    If (asWords[i] = "wine") Begin
+                        If (asWords[i - 1] = "red") ;
+                            Move "red wine" to asWords[i]
+                        If (asWords[i - 1] = "white") ;
+                            Move "white wine" to asWords[i]
+                    End
+                    
+                    
                     Move asWords[i]                 to tOrder.tItems[j].sItem
                     Move anPrices[iIdx]             to tOrder.tItems[j].nPrice
                     Move iQty                       to tOrder.tItems[j].iQty

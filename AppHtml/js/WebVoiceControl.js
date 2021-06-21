@@ -159,12 +159,4 @@ startListening : function(){
 
 },
 
-// stopListening : function(){
-
-//     if (this._eRecognition) {
-//         this._eRecognition.stop();
-//     }
-
-// }
-
 });

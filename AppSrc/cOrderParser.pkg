@@ -169,7 +169,7 @@ Class cOrderParser is a cObject
                 
                 If (iIdx > -1) Begin
                     
-                    // Wind needs colour!
+                    // Wind needs colour!  (Rosé is a separate item.)
                     If (asWords[i] = "wine") Begin
                         If (asWords[i - 1] = "red") ;
                             Move "red wine" to asWords[i]

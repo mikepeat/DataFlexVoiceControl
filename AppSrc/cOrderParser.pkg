@@ -177,7 +177,6 @@ Class cOrderParser is a cObject
                             Move "white wine" to asWords[i]
                     End
                     
-                    
                     Move asWords[i]                 to tOrder.tItems[j].sItem
                     Move anPrices[iIdx]             to tOrder.tItems[j].nPrice
                     Move iQty                       to tOrder.tItems[j].iQty

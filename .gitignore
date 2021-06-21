@@ -2,6 +2,7 @@
 *.prn
 *.dbg
 *.log
+*.dep
 IdeSrc/*.dsk
 IdeSrc/*.mtd
 IdeSrc/*.loc
@@ -10,3 +11,7 @@ AppHTML/DfEngine/*/*
 AppHTML/CssThemes/*
 AppHTML/CssThemes/*/*
 AppHTML/CssThemes/*/*/*
+AppHTML/Images/DF_Logo_Retina.png
+AppHTML/Images/PoweredByDataFlex.png
+Data/*
+DDSrc/*

@@ -1,0 +1,318 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg
+Use cWebVoiceControl.pkg
+Use cWebSpeechControl.pkg
+Use cWebButton.pkg
+Use cWebCombo.pkg
+Use cWebLabel.pkg
+Use cWebEdit.pkg
+Use cWebCheckBox.pkg
+Use cOrderParser.pkg
+Use GlobalFunctionsProcedures.pkg
+
+#IFNDEF C_LF
+    Define C_LF for (Character(10))
+#ENDIF
+
+Object oInTheBar is a cWebView
+    Set piWidth to 800
+    Set psCaption to "Down the pub... 🍺 🍷 🍸 🍹🍻"
+    
+    Delegate Set phoDefaultView to Self
+    
+    Object oOrderParser is a cOrderParser
+    End_Object
+
+    { WebProperty=Client }
+    Property Boolean pbOrderReceived False
+
+    Procedure StartBar
+        WebSet pbOrderReceived to False
+        Send GetVoices of oSpeaker
+    End_Procedure
+    
+    Procedure AnswerReceived String sTranscript
+        stOrder  tOrder
+        Integer  iItems i iQty
+        String   sResponse
+        Number   nTotal
+        Integer  iUnits iDecimal
+        String   sDecimal
+        
+        Get ParseOrder of oOrderParser sTranscript to tOrder
+
+        Move (SizeOfArray(tOrder.tItems)) to iItems
+        
+        If (iItems) Begin
+            Move "Here" to sResponse
+            
+            If ((iItems > 1) or (tOrder.tItems[0].iQty > 1)) ;
+                Move (sResponse * "are") to sResponse
+            Else ;
+                Move (sResponse * "is") to sResponse
+            
+            Move (sResponse * "your") to sResponse
+            Decrement iItems
+
+            For i from 0 to iItems
+                If (i > 0) Move (sResponse * "and") to sResponse
+                Move tOrder.tItems[i].iQty to iQty
+                Move (sResponse * If((iQty > 1), String(iQty), "")) to sResponse
+                Move (sResponse * tOrder.tItems[i].sItem) to sResponse
+            Loop
+            
+            Move (sResponse + ".") to sResponse
+            
+            For i from 0 to iItems
+                Move (nTotal + tOrder.tItems[i].nTotal) to nTotal
+            Loop
+            
+            Move (Integer(nTotal))                  to iUnits
+            Move ((nTotal - iUnits) * 100)          to sDecimal
+            Move (Left(sDecimal + "00", 2))         to sDecimal
+            
+            Move (sResponse * "That will be" * ;
+                  Default_Currency_Symbol() + ;
+                  String(iUnits) + "." + ;
+                  sDecimal + ".")                   to sResponse
+            
+            WebSet pbOrderReceived to True
+            WebSet pbEnabled of oStartBtn to True
+            Send Speak of oSpeaker sResponse
+        End
+        Else Begin
+            WebSet pbOrderReceived to False
+            Send Speak of oSpeaker "I'm sorry, I didn't catch that.  Could you say it again please."
+        End
+        
+    End_Procedure
+    
+    Procedure WhatCanIGetYou
+        String   sQuestion sVoice sAddr
+        Integer  i
+        String[] asVoices
+        Boolean  bFemale
+        
+        Get GetChecked of oFemale to bFemale
+        WebGet piVoice of oSpeaker to i
+        WebGet pasVoices of oSpeaker to asVoices
+        
+        If bFemale ;
+            Move "madam" to sAddr
+        Else ;
+            Move "sir" to sAddr
+
+        If (SizeOfArray(asVoices)) Begin
+            Move (Uppercase(asVoices[i])) to sVoice
+            
+            Case Begin
+                Case ((sVoice contains "AUSTRALIA") or (sVoice contains "AUSTRALIAN"))
+                    If bFemale ;
+                        Move "Sheila" to sAddr
+                    Else ;
+                        Move "Mate" to sAddr
+                    Case Break
+                Case ((sVoice contains "CANADA") or (sVoice contains "CANADIAN"))
+                    If bFemale ;
+                        Move "my good lady" to sAddr
+                    Else ;
+                        Move "my good fellow" to sAddr
+                    Case Break
+                Case ((sVoice contains "INDIA") or (sVoice contains "INDIAN"))
+                    Move "revered customer" to sAddr
+                    Case Break
+                Case ((sVoice contains "UK") or ;
+                      (sVoice contains "UNITED KINGDOM") or ;
+                      (sVoice contains "GREAT BRITAIN") or ;
+                      (sVoice contains "GB"))
+                     If bFemale ;
+                         Move "madam" to sAddr
+                     Else ;
+                         Move "sir" to sAddr
+                     Case Break
+                Case ((sVoice contains "US") or (sVoice contains "UNITED STATES"))
+                    Move "my friend" to sAddr
+                    Case Break
+            Case End
+        
+        End
+        
+        WebSet pbEnabled of oStartBtn to False
+        Send Speak of oSpeaker ("What can I get you to drink" * sAddr + "?")
+    End_Procedure
+    
+    Procedure SayOrder
+        Send StartListening of oListener
+    End_Procedure
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+
+        Object oFemale is a cWebCheckbox
+            Set piColumnIndex to 0
+            Set piColumnSpan to 0
+            Set psCaption to "Are you female?"
+        End_Object
+
+        Object oStartBtn is a cWebButton
+            Set piColumnIndex to 0
+            Set piColumnSpan to 3
+            Set psCaption to "Catch bartender's eye..."
+        
+            Procedure OnClick
+                Send StartBar
+            End_Procedure
+
+        End_Object
+
+        Object oBartenderCombo is a cWebCombo
+            Set piColumnSpan to 6
+            Set piColumnIndex to 3
+            Set psLabel to "Select Bartender:"
+            Set peLabelAlign to alignRight
+            Set pbVisible to False
+            Set pbServerOnChange to True
+            
+            Procedure OnFill
+                String[] asVoices
+                Integer  i iLast
+                
+                WebGet pasVoices of oSpeaker to asVoices
+                Move (SizeOfArray(asVoices)) to iLast
+                
+                If not iLast ;
+                    Procedure_Return
+                
+                Decrement iLast
+                
+                For i from 0 to iLast
+                    Send AddComboItem i asVoices[i]
+                Loop
+                
+                WebSet pbVisible to True
+                WebSet pbVisible of oShowHideTranscript to True
+                WebSet pbRender  of oKeepTrying to False
+                Send WhatCanIGetYou
+            End_Procedure
+            
+            Procedure OnChange String sNewValue String sOldValue
+                WebSet piVoice of oSpeaker to (Integer(sNewValue))
+            End_Procedure
+            
+            Procedure LoadBartenders
+                Send Refill
+            End_Procedure
+            
+        End_Object
+
+        Object oShowHideTranscript is a cWebCheckbox
+            Set piColumnSpan to 3
+            Set piColumnIndex to 9
+            Set psCaption to "Show Transcript"
+            Set pbVisible to False
+            Set pbServerOnChange to True
+            
+            Procedure OnChange String sNewValue String sOldValue
+                
+                If (sNewValue = "1") Begin
+                    WebSet psCaption to "Hide Transcript"
+                    WebSet pbVisible of oTranscript to True
+                    WebSet pbVisible of oClearTranscript to True
+                End
+                Else Begin
+                    WebSet psCaption to "Show Transcript"
+                    WebSet pbVisible of oTranscript to False
+                    WebSet pbVisible of oClearTranscript to False
+                End
+                
+            End_Procedure
+            
+        End_Object
+
+        Object oKeepTrying is a cWebLabel
+            Set piColumnIndex to 0
+            Set piColumnSpan to 4
+            Set psCaption to "(Keep trying until they notice you!)"
+        End_Object
+
+        Object oTranscript is a cWebEdit
+            Set piColumnSpan to 0
+            Set psLabel to "Transcript:"
+            Set peLabelPosition to lpTop
+            Set pbFillHeight to True
+            Set pbVisible to False
+            Set pbReadOnly to True
+            Set pbScroll to True
+            
+            Procedure Clear
+                WebSet psValue to ""
+            End_Procedure
+            
+            Procedure AddText String sText
+                String sCurrent
+                
+                If (sText = "") ;
+                    Procedure_Return
+                    
+                WebGet psValue to sCurrent
+                WebSet psValue to (sCurrent + ;
+                                   If(Length(sCurrent), C_LF + C_LF, "") + ;
+                                   sText)
+            End_Procedure
+            
+        End_Object
+
+        Object oClearTranscript is a cWebButton
+            Set piColumnSpan to 2
+            Set piColumnIndex to 10
+            Set pbVisible to False
+            Set psCaption to "Clear Transcript"
+        
+            Procedure OnClick
+                Send Clear of oTranscript
+            End_Procedure
+            
+        End_Object
+
+        Object oSpeaker is a cWebSpeechControl
+            
+            Procedure OnVoicesReceived
+                Send LoadBartenders of oBartenderCombo
+            End_Procedure
+            
+            Procedure OnSpeak String sWords
+                Send AddText of oTranscript sWords
+            End_Procedure
+            
+            Procedure OnSpeechEnded
+                Boolean bOrdered
+                
+                WebGet pbOrderReceived of oInTheBar to bOrdered
+                If not bOrdered ;
+                    Send SayOrder
+            End_Procedure
+            
+            Procedure OnSpeechError String sErr
+                Send ShowInfoBox sErr "Speech Error"
+            End_Procedure
+            
+        End_Object
+
+        Object oListener is a cWebVoiceControl
+            Set pbStopOnResult to True
+            
+            Procedure OnVoiceReceived String sTranscript
+                Send AddText of oTranscript sTranscript
+                Send AnswerReceived sTranscript
+            End_Procedure
+            
+            Procedure OnVoiceError String sErr
+                Send ShowInfoBox sErr "Voice Error"
+            End_Procedure
+            
+        End_Object
+        
+    End_Object 
+
+End_Object

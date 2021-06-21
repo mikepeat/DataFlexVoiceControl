@@ -1,0 +1,74 @@
+﻿Use cWebBaseControl.pkg
+Use cJsonObject.pkg
+
+Class cWebSpeechControl is a cWebBaseControl
+    
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        
+        { WebProperty=Client }
+        Property String[] pasVoices
+        { WebProperty=Client }
+        Property String   piVoice
+        { WebProperty=Client }
+        Property String   piVolume 1
+        { WebProperty=Client }
+        Property String   piRate 1
+        { WebProperty=Client }
+        Property String   piPitch 1
+        
+        Set psJSClass to "uig.WebSpeechControl"
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnSpeechError String sErr
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnSpeak String sWords
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnSpeechEnded
+    End_Procedure
+    
+    { MethodType=Method }
+    Procedure Speak String sWords
+        String[] asParams
+        
+        Send OnSpeak sWords
+        
+        Move sWords to asParams[0]
+        Send ClientAction "speak" asParams
+    End_Procedure
+
+    { MethodType=Method }
+    Procedure GetVoices
+        Send ClientAction "getVoices"
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnVoicesReceived
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnGetVoices
+        tWebValueTree tVT
+        String[] asVoices
+        
+        Get ptActionData to tVT
+        ValueTreeDeserializeParameter tVT to asVoices
+        WebSet pasVoices to asVoices
+        Send OnVoicesReceived
+    End_Procedure
+
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+        
+        WebPublishProcedure OnSpeechError
+        WebPublishProcedure OnGetVoices
+        WebPublishProcedure OnVoicesReceived
+        WebPublishProcedure OnSpeechEnded
+    End_Procedure
+
+End_Class

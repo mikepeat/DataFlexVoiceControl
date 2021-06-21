@@ -1,0 +1,170 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg 
+Use cWebVoiceControl.pkg
+Use cWebEdit.pkg
+Use cWebButton.pkg
+Use cWebLabel.pkg
+Use cWebSpeechControl.pkg
+Use cWebCombo.pkg
+
+#IFNDEF C_LF
+    Define C_LF for (Character(10))
+#ENDIF
+
+Object oTestVoice is a cWebView
+    Set piWidth to 700
+    Set psCaption to "Test Voice Control"
+            
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+                    
+        Object oStart is a cWebButton
+            Set piColumnSpan to 3
+            Set psCaption to "Start Listening"
+        
+            Procedure OnClick
+                Send StartListening of oVoice
+            End_Procedure
+            
+        End_Object
+    
+        Object oStop is a cWebButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 4
+            Set psCaption to "Stop Listening"
+        
+            Procedure OnClick
+                Send StopListening of oVoice
+            End_Procedure
+            
+        End_Object
+
+        Object oClearResp is a cWebButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 8
+            Set psCaption to "Clear Responses"
+        
+            Procedure OnClick
+                WebSet psValue of oResponses to ""
+            End_Procedure
+            
+        End_Object
+        
+        Object oSpeak is a cWebButton
+            Set piColumnSpan to 2
+            Set piColumnIndex to 0
+            Set psCaption to "Speak"
+            
+            Procedure OnClick
+                String[] asVoices
+                String   sAddr sVoice
+                Integer  i
+                
+                WebGet pasVoices of oSpeaker to asVoices
+                WebGet psValue of oVoicesCombo to i
+                Move (Uppercase(asVoices[i])) to sVoice
+                
+                Case Begin
+                    Case ((sVoice contains "UK") or (sVoice contains "UNITED KINGDOM") or (sVoice contains "GREAT BRITAIN"))
+                        Move "Sir" to sAddr
+                        Case Break
+                    Case ((sVoice contains "US") or (sVoice contains "UNITED STATES"))
+                        Move "my friend" to sAddr
+                        Case Break
+                    Case ((sVoice contains "AUSTRALIA") or (sVoice contains "AUSTRALIAN"))
+                        Move "Mate" to sAddr
+                        Case Break
+                    Case ((sVoice contains "CANADA") or (sVoice contains "CANADIAN"))
+                        Move "my good man" to sAddr
+                        Case Break
+                    Case ((sVoice contains "INDIA") or (sVoice contains "INDIAN"))
+                        Move "revered customer" to sAddr
+                        Case Break
+                    Case Else
+                        Move "Sir" to sAddr
+                Case End
+                
+                Send Speak of oSpeaker ("What can I get you to drink" * sAddr + "?")
+            End_Procedure
+            
+        End_Object
+
+        Object oGetVoices is a cWebButton
+            Set piColumnSpan to 2
+            Set piColumnIndex to 2
+            Set psCaption to "Voices"
+            
+            Procedure OnClick
+                Send GetVoices of oSpeaker
+            End_Procedure
+            
+        End_Object
+
+        Object oVoicesCombo is a cWebCombo
+            Set piColumnSpan to 8
+            Set piColumnIndex to 4
+            Set psLabel to "Voices:"
+            Set peLabelAlign to alignRight
+            
+            Procedure OnFill
+                String[] asVoices
+                Integer  i iLast
+                
+                WebGet pasVoices of oSpeaker to asVoices
+                Move (SizeOfArray(asVoices) - 1) to iLast
+                
+                For i from 0 to iLast
+                    Send AddComboItem i asVoices[i] 
+                Loop
+                
+            End_Procedure
+            
+        End_Object
+
+        Object oResponses is a cWebEdit
+            Set piColumnSpan to 0
+            Set pbFillHeight to True
+            Set psLabel to "Responses"
+            Set peLabelPosition to lpTop
+        End_Object
+
+        Object oVoice is a cWebVoiceControl
+            
+            Procedure OnVoiceReceived String sTranscript
+                String  sText
+                
+                WebGet psValue of oResponses to sText
+                WebSet psValue of oResponses to ;
+                    (sText + If(Length(sText), C_LF + C_LF, "") + Trim(sTranscript))
+            End_Procedure
+            
+            Procedure OnVoiceError String sErr
+                Send ShowInfoBox sErr "Voice Error"
+            End_Procedure
+            
+            Procedure OnListeningEnded
+                Send ShowInfoBox "Listening has ended" "Voice"
+            End_Procedure
+            
+        End_Object
+        
+        Object oSpeaker is a cWebSpeechControl
+            
+            Procedure Speak String sWords
+                Integer iVoice
+                
+                WebGet psValue of oVoicesCombo to iVoice
+                WebSet piVoice to iVoice
+                Forward Send Speak sWords
+            End_Procedure
+            
+            Procedure OnVoicesReceived
+                Send Refill of oVoicesCombo
+            End_Procedure
+            
+        End_Object
+        
+    End_Object
+            
+End_Object

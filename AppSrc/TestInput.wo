@@ -1,0 +1,53 @@
+﻿Use cWebView.pkg
+Use cWebPanel.pkg
+Use cWebForm.pkg
+Use cWebVoiceButton.pkg
+Use cWebEdit.pkg
+
+Define C_lf for (Character(10))
+
+Object oTestInput is a cWebView
+    Set piWidth to 700
+    Set psCaption to "Test Input"
+
+    Object oWebMainPanel is a cWebPanel
+        Set piColumnCount to 12
+        
+        Object oVoiceButton is a cWebVoiceButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 0
+            Set psCaption to "Start Voice Input"
+            Set piTimeout to 5000
+            
+            Procedure OnResponse String sTranscript
+                String  sText
+                
+                WebGet psValue of oInput to sText
+                WebSet psValue of oInput to ;
+                    (sText + If(Length(sText), C_lf + C_lf, "") + sTranscript)
+
+            End_Procedure
+
+        End_Object
+        
+        Object oClearInput is a cWebButton
+            Set piColumnSpan to 3
+            Set piColumnIndex to 4
+            Set psCaption to "Clear Input"
+        
+            Procedure OnClick
+                WebSet psValue of oInput to ""
+            End_Procedure
+            
+        End_Object
+
+        Object oInput is a cWebEdit
+            Set piColumnSpan to 0
+            Set psLabel to "Input:"
+            Set peLabelPosition to lpTop
+            Set pbFillHeight to True
+        End_Object
+        
+    End_Object 
+
+End_Object

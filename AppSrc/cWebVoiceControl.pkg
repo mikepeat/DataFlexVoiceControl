@@ -1,0 +1,108 @@
+﻿Use cWebBaseControl.pkg
+
+Class cWebVoiceControl is a cWebBaseControl
+    
+    Procedure Construct_Object
+        Forward Send Construct_Object
+        
+        { WebProperty=Client }
+        Property Integer piListenFor 0  // milliseconds: 1000 = 1 second; 0 = continuous
+        { WebProperty=Client }
+        Property Boolean pbInterimResults False
+        { WebProperty=Client }
+        Property Integer piMaxAlternatives 1
+        { WebProperty=Client }
+        Property String  psLanguage ""
+        { WebProperty=Client }
+        Property Boolean pbStopOnResult False
+        
+        // serverOn{Event} settings
+        { WebProperty=Client }
+        Property Boolean pbServerOnStart        False
+        { WebProperty=Client }
+        Property Boolean pbServerOnEnd          False
+        { WebProperty=Client }
+        Property Boolean pbServerOnAudioStart   False
+        { WebProperty=Client }
+        Property Boolean pbServerOnAudioEnd     False
+        { WebProperty=Client }
+        Property Boolean pbServerOnError        False
+        { WebProperty=Client }
+        Property Boolean pbServerOnNoMatch      False
+        { WebProperty=Client }
+        Property Boolean pbServerOnResult       True
+        { WebProperty=Client }
+        Property Boolean pbServerOnSoundStart   False
+        { WebProperty=Client }
+        Property Boolean pbServerOnSoundEnd     False
+        { WebProperty=Client }
+        Property Boolean pbServerOnSpeechStart  False
+        { WebProperty=Client }
+        Property Boolean pbServerOnSpeechEnd    False
+        
+        Set psJSClass to "uig.WebVoiceControl"
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnVoiceError String sErr
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceReceived String sTranscript
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnVoiceNoMatch
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceAudioStart
+    End_Procedure
+    
+    { MethodType=Event }
+    Procedure OnVoiceAudioEnd
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceSoundStart
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceSoundEnd
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceSpeechStart
+    End_Procedure
+
+    { MethodType=Event }
+    Procedure OnVoiceSpeechEnd
+    End_Procedure
+
+    { MethodType=Method }
+    Procedure StartListening
+        Send ClientAction "startListening"
+    End_Procedure
+        
+    { MethodType=Method }
+    Procedure StopListening
+        Send ClientAction "stopListening"
+    End_Procedure
+        
+    Procedure End_Construct_Object
+        Forward Send End_Construct_Object
+        
+        WebPublishProcedure OnVoiceStart
+        WebPublishProcedure OnVoiceEnd
+        WebPublishProcedure OnVoiceReceived
+        WebPublishProcedure OnVoiceError
+        WebPublishProcedure OnVoiceNoMatch
+        WebPublishProcedure OnVoiceAudioStart
+        WebPublishProcedure OnVoiceAudioEnd
+        WebPublishProcedure OnVoiceSoundStart
+        WebPublishProcedure OnVoiceSoundEnd
+        WebPublishProcedure OnVoiceSpeechStart
+        WebPublishProcedure OnVoiceSpeechEnd
+    End_Procedure
+
+End_Class

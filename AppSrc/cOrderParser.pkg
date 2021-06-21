@@ -1,0 +1,183 @@
+﻿Use UI
+Use GlobalFunctionsProcedures.pkg
+
+#IFNDEF _struct_stItem
+    Struct stItem
+        String  sItem
+        Integer iQty
+        Number  nPrice
+        Number  nTotal
+    End_Struct
+#ENDIF
+
+#IFNDEF _struct_stOrder
+    Struct stOrder
+        stItem[] tItems
+    End_Struct
+#ENDIF
+
+#IFNDEF C_Digits
+    Define C_Digits for "0123456789"
+#ENDIF
+
+Class cOrderParser is a cObject
+    
+    Procedure Construct_Object
+        String[] asDrinks
+        Number[] anPrices
+
+        Forward Send Construct_Object
+        
+        Property String[] pasDrinks
+        Property Number[] panPrices
+
+        Move "beer"         to asDrinks[0]
+        Move "water"        to asDrinks[1]
+        Move "tea"          to asDrinks[2]
+        Move "coffee"       to asDrinks[3]
+        Move "gin"          to asDrinks[4]
+        Move "whisky"       to asDrinks[5]
+        Move "whiskey"      to asDrinks[6]
+        Move "rum"          to asDrinks[7]
+        Move "vodka"        to asDrinks[8]
+        Move "brandy"       to asDrinks[9]
+        Move "brandies"     to asDrinks[10]
+        Move "brandy's"     to asDrinks[11]
+        Move "cognac"       to asDrinks[12]
+        Move "orange"       to asDrinks[13]
+        Move "soda"         to asDrinks[14]
+        Move "coke"         to asDrinks[15]
+        Move "lime"         to asDrinks[16]
+        Move "chip"         to asDrinks[17]
+        Move "crisp"        to asDrinks[18]
+        Move "lemonade"     to asDrinks[19]
+        Move "coke-a-cola"  to asDrinks[20]
+        Move "scotch"       to asDrinks[21]
+        Move "malt"         to asDrinks[22]
+        Move "lager"        to asDrinks[23]
+        Move "bitter"       to asDrinks[24]
+        Move "ale"          to asDrinks[25]
+        Move "wine"         to asDrinks[26]
+        Move "tonic"        to asDrinks[27]
+        Move "ginger"       to asDrinks[28]
+        
+        Move 3.80           to anPrices[0]
+        Move 0              to anPrices[1]
+        Move 3.50           to anPrices[2]
+        Move 4.15           to anPrices[3]
+        Move 5.30           to anPrices[4]
+        Move 5.90           to anPrices[5]
+        Move 5.90           to anPrices[6]
+        Move 4.90           to anPrices[7]
+        Move 4.50           to anPrices[8]
+        Move 6.10           to anPrices[9]
+        Move 6.10           to anPrices[10]
+        Move 6.10           to anPrices[11]
+        Move 7.20           to anPrices[12]
+        Move 0.30           to anPrices[13]
+        Move 0.40           to anPrices[14]
+        Move 0.95           to anPrices[15]
+        Move 0.25           to anPrices[16]
+        Move 0.75           to anPrices[17]
+        Move 0.75           to anPrices[18]
+        Move 0.80           to anPrices[19]
+        Move 0.95           to anPrices[20]
+        Move 5.90           to anPrices[21]
+        Move 7.95           to anPrices[22]
+        Move 3.70           to anPrices[23]
+        Move 3.90           to anPrices[24]
+        Move 3.95           to anPrices[25]
+        Move 4.10           to anPrices[26]
+        Move 0.80           to anPrices[27]
+        Move 0.85           to anPrices[28]
+        
+        Set pasDrinks to asDrinks
+        Set panPrices to anPrices
+    End_Procedure
+    
+    // This could be extened
+    Function WordsToNum String sWord Returns String
+        If (sWord = "one")   Function_Return "1"
+        If (sWord = "two")   Function_Return "2"
+        If (sWord = "three") Function_Return "3"
+        If (sWord = "four")  Function_Return "4"
+        If (sWord = "five")  Function_Return "5"
+        If (sWord = "six")   Function_Return "6"
+        If (sWord = "seven") Function_Return "7"
+        If (sWord = "eight") Function_Return "8"
+        If (sWord = "nine")  Function_Return "9"
+        Function_Return sWord
+    End_Function
+    
+    Function IsNumber String sWord Returns Boolean
+        Boolean bIsNum
+        Integer iLen i
+        
+        Move (Length(sWord)) to iLen
+        Move True to bIsNum
+        
+        For i from 1 to iLen
+            If not (C_Digits contains Mid(sWord, 1, i)) ;
+                Move False to bIsNum
+        Until not bIsNum
+        
+        Function_Return bIsNum
+    End_Function
+    
+    Function ParseOrder String sOrder Returns stOrder
+        String[] asWords asDrinks
+        Number[] anPrices
+        Integer  i iMax j iIdx iQty
+        stOrder  tOrder
+        String   sQty sItem
+        
+        If (sOrder = "") ;
+            Function_Return tOrder
+        
+        Move (Lowercase(sOrder)) to sOrder
+        Get pasDrinks to asDrinks
+        Get panPrices to anPrices
+        
+        Move (StrSplitToArray(sOrder, " ")) to asWords
+        Move (SizeOfArray(asWords) - 1) to iMax
+        Move 0 to j
+        Move 1 to iQty
+        
+        For i from 0 to iMax
+            Move (WordsToNum(Self, asWords[i])) to sQty
+            
+            If (IsNumber(Self, sQty)) ;
+                Move sQty to iQty
+            Else Begin
+                Move asWords[i] to sItem
+                
+                // Remove trailing period if present
+                If (Right(sItem, 1) = ".") ;
+                    Move (Left(sItem, (Length(sItem) - 1))) to sItem
+                // Remove trailing comma if present
+                If (Right(sItem, 1) = ",") ;
+                    Move (Left(sItem, (Length(sItem) - 1))) to sItem
+                // Remove training "s" if present
+                If (Right(sItem, 1) = "s") ;
+                    Move (Left(sItem, (Length(sItem) - 1))) to sItem
+                    
+                Move (SearchArray(sItem, asDrinks)) to iIdx
+                
+                If (iIdx > -1) Begin
+                    Move asWords[i]                 to tOrder.tItems[j].sItem
+                    Move anPrices[iIdx]             to tOrder.tItems[j].nPrice
+                    Move iQty                       to tOrder.tItems[j].iQty
+                    Move (iQty * anPrices[iIdx])    to tOrder.tItems[j].nTotal
+                    
+                    Move 1 to iQty
+                    Increment j
+                End
+
+            End
+            
+        Loop
+        
+        Function_Return tOrder
+    End_Function
+
+End_Class

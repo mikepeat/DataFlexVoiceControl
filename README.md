@@ -1,6 +1,8 @@
 # VoiceControl
 Voice input and output for DataFlex WebApps.
 
+Note: all files are DataFlex 20.0, so Unicode (UTF-8).
+
 ATM, this is limited to use in Chrome and Edge desktop browsers, since they are
 the only ones which support the required speech recognition API.  Safari,
 Firefox, Opera and Brave do not, nor do any mobile browsers I have tried so 

@@ -137,6 +137,63 @@ Object oWebApp is a cWebApp
             End_Object 
         End_Object
     End_Object
+    
+    { WebProperty=Client }
+    Property String psCurrencySymbol "€"
+    
+    Procedure OnInitializeLocales String sLang Integer iClientTimezoneOffsetMins
+        String sCurSym
+        
+        Move "€" to sCurSym        // Default to Euro
+        Move (Lowercase(sLang)) to sLang
+        
+        Case Begin
+            Case (sLang = "en-us")
+                Move "$" to sCurSym
+                Case Break
+            Case (sLang = "en-gb")
+                Move "£" to sCurSym
+                Case Break
+            Case (sLang = "en-au")
+                Move "$" to sCurSym
+                Case Break
+            Case (sLang = "en-ca")
+                Move "$" to sCurSym
+                Case Break
+            Case (sLang = "fr-ca")
+                Move "$" to sCurSym
+                Case Break
+            Case (sLang = "en-in")
+                Move "₹" to sCurSym 
+                Case Break
+            Case (sLang = "en-za")
+                Move "Z" to sCurSym
+                Case Break
+            Case (Right(sLang, 2) = "ch")
+                Move "CHF" to sCurSym
+                Case Break
+            Case (sLang = "ja")
+                Move "¥" to sCurSym
+                Case Break
+            Case (Left(sLang, 2) = "zh")
+                Move "¥" to sCurSym
+                Case Break
+            Case (sLang = "da")
+                Move "Kr." to sCurSym
+                Case Break
+            Case (Left(sLang, 2) = "sv")
+                Move "kr" to sCurSym
+                Case Break
+            Case (Left(sLang, 2) = "no")
+                Move "kr" to sCurSym
+                Case Break
+            Case (sLang = "pt-br")
+                Move "R$" to sCurSym
+                Case Break
+        Case End
+        
+        WebSet psCurrencySymbol to sCurSym
+    End_Procedure
 
     Use SessionManager.wo
     Use LoginDialog.wo

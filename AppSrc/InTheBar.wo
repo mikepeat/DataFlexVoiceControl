@@ -17,7 +17,7 @@ Use GlobalFunctionsProcedures.pkg
 
 Object oInTheBar is a cWebView
     Set piWidth to 800
-    Set psCaption to "Down the pub... 🍺 🍷 🍸 🍹🍻"
+    Set psCaption to "Down the pub - time to get the drinks in... 🍺 🍷 🍸 🍹🍻"
     
     Delegate Set phoDefaultView to Self
     
@@ -34,11 +34,11 @@ Object oInTheBar is a cWebView
     
     Procedure AnswerReceived String sTranscript
         stOrder  tOrder
-        Integer  iItems i iQty
-        String   sResponse
+        Integer  iItems i iQty iUnits iDecimal
+        String   sResponse sDecimal sCurSym
         Number   nTotal
-        Integer  iUnits iDecimal
-        String   sDecimal
+        
+        WebGet psCurrencySymbol of ghoWebApp to sCurSym
         
         Get ParseOrder of oOrderParser sTranscript to tOrder
 
@@ -73,7 +73,7 @@ Object oInTheBar is a cWebView
             Move (Left(sDecimal + "00", 2))         to sDecimal
             
             Move (sResponse * "That will be" * ;
-                  Default_Currency_Symbol() + ;
+                  sCurSym + ;
                   String(iUnits) + "." + ;
                   sDecimal + ".")                   to sResponse
             

@@ -13,7 +13,7 @@ and WebVoiceControl.js.
 
 The sample "In the bar" view lets you test out the interface - it makes use of
 the cOrderParser class, which is a moron-level bit of AI (well, how bright do
-you have to be to work behind a bar? <g>) - it thinks gin and tonic are two
-seperate drinks, FFS! ;-)
+you have to be to work behind a bar? <g>  Not really a challenger to Jarvis or
+SkyNet I'm afraid!) - it thinks gin and tonic are two separate drinks, FFS! ;-)
 
 Mike

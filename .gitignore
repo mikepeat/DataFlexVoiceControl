@@ -1,0 +1,12 @@
+*.exe
+*.prn
+*.dbg
+*.log
+IdeSrc\*.dsk
+IdeSrc\*.mtd
+IdeSrc\*.loc
+AppSrc\DfEngine\*
+AppSrc\DfEngine\*\*
+AppHTML\CssThemes\*
+AppHTML\CssThemes\*\*
+AppHTML\CssThemes\*\*\*

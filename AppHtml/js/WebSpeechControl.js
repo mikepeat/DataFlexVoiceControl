@@ -26,7 +26,7 @@ uig.WebSpeechControl = function WebSpeechControl(sName, oParent){
 };
 
 /*
-This class is the implementation of the client-side part of the WebVoiceControl object.
+This class is the implementation of the client-side part of the cWebVoiceControl object.
 */
 df.defineClass("uig.WebSpeechControl", "df.WebBaseControl", {
 

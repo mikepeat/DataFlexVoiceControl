@@ -44,6 +44,10 @@ Class cWebVoiceControl is a cWebBaseControl
     End_Procedure
     
     { MethodType=Event }
+    Procedure OnVoiceEnd
+    End_Procedure
+    
+    { MethodType=Event }
     Procedure OnVoiceError String sErr
     End_Procedure
 

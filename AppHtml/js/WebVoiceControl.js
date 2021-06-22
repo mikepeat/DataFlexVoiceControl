@@ -43,7 +43,7 @@ uig.WebVoiceControl = function WebVoiceControl(sName, oParent){
 };
 
 /*
-This class is the implementation of the client-side part of the WebVoiceControl object.
+This class is the implementation of the client-side part of the cWebVoiceControl object.
 */
 df.defineClass("uig.WebVoiceControl", "df.WebBaseControl", {
 
@@ -51,10 +51,12 @@ startListening : function(){
     var that = this, SpeechRecognition, recognition;
 
     try {
-        SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || SpeechRecognition;
+        SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognition();
     } catch(e) { // Looks like we can't do speech recognition here. :-(
-        this.serverAction("OnVoiceError", ["Sorry - voice input is not supported in this browser"])
+        if (that.pbServerOnError){
+            that.serverAction("OnVoiceError", ["Sorry - voice input is not supported in this browser"])
+        }
         return;
     }
 
@@ -84,7 +86,7 @@ startListening : function(){
         that._bListening = false;
 
         if (that.pbServerOnEnd){
-            that.serverAction("OnVoiceOnEnd");
+            that.serverAction("OnVoiceEnd");
         }
     }
 

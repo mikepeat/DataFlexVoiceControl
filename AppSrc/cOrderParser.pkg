@@ -10,12 +10,6 @@ Use GlobalFunctionsProcedures.pkg
     End_Struct
 #ENDIF
 
-#IFNDEF _struct_stOrder
-    Struct stOrder
-        stItem[] tItems
-    End_Struct
-#ENDIF
-
 #IFNDEF C_Digits
     Define C_Digits for "0123456789"
 #ENDIF
@@ -41,7 +35,7 @@ Class cOrderParser is a cObject
         Move "rum"          to asDrinks[7]
         Move "vodka"        to asDrinks[8]
         Move "brandy"       to asDrinks[9]
-        Move "brandies"     to asDrinks[10]
+        Move "brandie"     to asDrinks[10]
         Move "brandy's"     to asDrinks[11]
         Move "cognac"       to asDrinks[12]
         Move "orange"       to asDrinks[13]
@@ -65,6 +59,10 @@ Class cOrderParser is a cObject
         Move "champagne"    to asDrinks[31]
         Move "cider"        to asDrinks[32]
         Move "tomato"       to asDrinks[33]
+        Move "brandy'"      to asDrinks[34]
+        Move "guinness"     to asDrinks[35]
+        Move "guinnes"      to asDrinks[36]
+        Move "lemon"        to asDrinks[37]
         
         Move 3.80           to anPrices[0]
         Move 0              to anPrices[1]
@@ -75,7 +73,6 @@ Class cOrderParser is a cObject
         Move 5.90           to anPrices[6]
         Move 4.90           to anPrices[7]
         Move 4.50           to anPrices[8]
-        Move 6.10           to anPrices[9]
         Move 6.10           to anPrices[10]
         Move 6.10           to anPrices[11]
         Move 7.20           to anPrices[12]
@@ -100,6 +97,10 @@ Class cOrderParser is a cObject
         Move 5.40           to anPrices[31]
         Move 3.20           to anPrices[32]
         Move 0.50           to anPrices[33]
+        Move 6.10           to anPrices[34]
+        Move 4.15           to anPrices[35]
+        Move 4.15           to anPrices[36]
+        Move 0.80           to anPrices[37]
         
         Set pasDrinks to asDrinks
         Set panPrices to anPrices
@@ -134,15 +135,15 @@ Class cOrderParser is a cObject
         Function_Return bIsNum
     End_Function
     
-    Function ParseOrder String sOrder Returns stOrder
+    Function ParseOrder String sOrder Returns stItem[]
         String[] asWords asDrinks
         Number[] anPrices
         Integer  i iMax j iIdx iQty
-        stOrder  tOrder
+        stItem[] atOrder
         String   sQty sItem
         
         If (sOrder = "") ;
-            Function_Return tOrder
+            Function_Return atOrder
         
         Move (Lowercase(sOrder)) to sOrder
         Get pasDrinks to asDrinks
@@ -181,6 +182,12 @@ Class cOrderParser is a cObject
                             Move "red wine" to asWords[i]
                         If (asWords[i - 1] = "white") ;
                             Move "white wine" to asWords[i]
+                        If (asWords[i - 1] = "ginger") ;
+                            Move "ginger wine" to asWords[i]
+                        If (asWords[i - 1] = "elderflower") ;
+                            Move "elderflower wine" to asWords[i]
+                        If (asWords[i - 1] = "tonic") ;
+                            Move "tonic wine" to asWords[i]
                     End
                     
                     If (asWords[i] = "tomato") ;
@@ -188,10 +195,10 @@ Class cOrderParser is a cObject
                     If (asWords[i] = "orange") ;
                         Move "orange juice" to asWords[i]
                     
-                    Move asWords[i]                 to tOrder.tItems[j].sItem
-                    Move anPrices[iIdx]             to tOrder.tItems[j].nPrice
-                    Move iQty                       to tOrder.tItems[j].iQty
-                    Move (iQty * anPrices[iIdx])    to tOrder.tItems[j].nTotal
+                    Move asWords[i]                 to atOrder[j].sItem
+                    Move anPrices[iIdx]             to atOrder[j].nPrice
+                    Move iQty                       to atOrder[j].iQty
+                    Move (iQty * anPrices[iIdx])    to atOrder[j].nTotal
                     
                     Move 1 to iQty
                     Increment j
@@ -201,7 +208,7 @@ Class cOrderParser is a cObject
             
         Loop
         
-        Function_Return tOrder
+        Function_Return atOrder
     End_Function
 
 End_Class

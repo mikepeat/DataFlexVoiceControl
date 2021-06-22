@@ -33,21 +33,21 @@ Object oInTheBar is a cWebView
     End_Procedure
     
     Procedure AnswerReceived String sTranscript
-        stOrder  tOrder
+        stItem[] atOrder
         Integer  iItems i iQty iUnits iDecimal
         String   sResponse sDecimal sCurSym
         Number   nTotal
         
         WebGet psCurrencySymbol of ghoWebApp to sCurSym
         
-        Get ParseOrder of oOrderParser sTranscript to tOrder
+        Get ParseOrder of oOrderParser sTranscript to atOrder
 
-        Move (SizeOfArray(tOrder.tItems)) to iItems
+        Move (SizeOfArray(atOrder)) to iItems
         
         If (iItems) Begin
             Move "Here" to sResponse
             
-            If ((iItems > 1) or (tOrder.tItems[0].iQty > 1)) ;
+            If ((iItems > 1) or (atOrder[0].iQty > 1)) ;
                 Move (sResponse * "are") to sResponse
             Else ;
                 Move (sResponse * "is") to sResponse
@@ -57,15 +57,15 @@ Object oInTheBar is a cWebView
 
             For i from 0 to iItems
                 If (i > 0) Move (sResponse * "and") to sResponse
-                Move tOrder.tItems[i].iQty to iQty
+                Move atOrder[i].iQty to iQty
                 Move (sResponse * If((iQty > 1), String(iQty), "")) to sResponse
-                Move (sResponse * tOrder.tItems[i].sItem) to sResponse
+                Move (sResponse * atOrder[i].sItem) to sResponse
             Loop
             
             Move (sResponse + ".") to sResponse
             
             For i from 0 to iItems
-                Move (nTotal + tOrder.tItems[i].nTotal) to nTotal
+                Move (nTotal + atOrder[i].nTotal) to nTotal
             Loop
             
             Move (Integer(nTotal))                  to iUnits
@@ -300,7 +300,9 @@ Object oInTheBar is a cWebView
         End_Object
 
         Object oListener is a cWebVoiceControl
-            Set pbStopOnResult to True
+            Set pbStopOnResult  to True
+            Set pbServerOnEnd   to True
+            Set pbServerOnError to True
             
             Procedure OnVoiceReceived String sTranscript
                 Send AddText of oTranscript sTranscript
@@ -309,6 +311,11 @@ Object oInTheBar is a cWebView
             
             Procedure OnVoiceError String sErr
                 Send ShowInfoBox sErr "Voice Error"
+                WebSet pbEnabled of oStartBtn to True
+            End_Procedure
+            
+            Procedure OnVoiceEnd
+                WebSet pbEnabled of oStartBtn to True
             End_Procedure
             
         End_Object

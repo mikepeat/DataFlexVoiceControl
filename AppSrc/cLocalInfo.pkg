@@ -1,0 +1,136 @@
+﻿Use UI
+
+// ToDo: Get working
+//#IFNDEF _struct_stSYSTEMTIME
+//    Struct stSYSTEMTIME 
+//        UShort wYear
+//        UShort wMonth
+//        UShort wDayOfWeek
+//        UShort wDay
+//        UShort wHour
+//        UShort wMinute
+//        UShort wSecond
+//        UShort wMilliseconds
+//    End_Struct
+//#ENDIF
+//
+//#IFNDEF _struct_stTIME_ZONE_INFORMATION
+//    Struct stTIME_ZONE_INFORMATION 
+//        Integer      Bias
+//        UShort[32]   StandardName
+//        stSYSTEMTIME StandardDate
+//        Integer      StandardBias
+//        UShort[32]   DaylightName
+//        stSYSTEMTIME DaylightDate
+//        Integer      DaylightBias
+//    End_Struct
+//#ENDIF
+//
+//External_Function TimeZoneInfo "GetTimeZoneInformation" Kernel32.DLL ;
+//    Address lpTimeZoneInformation ;
+//    Returns UShort
+
+#IFNDEF _struct_stCurrency
+    Struct stCurrency
+        String sSymbol
+        String sName
+        String sISOCode
+    End_Struct
+
+Class cLocalInfo is a cObject
+
+// ToDo: Get working
+//    Function ClientLocalTime Returns DateTime
+//        stTIME_ZONE_INFORMATION tTZInfo
+//        Address  pTZInfo
+//        UShort   usRetVal
+//        DateTime dtLocal
+//        
+//        Move (AddressOf(tTZInfo)) to pTZInfo
+//        Move (TimeZoneInfo(pTZInfo)) to usRetVal
+//        
+//        Function_Return dtLocal
+//    End_Function
+
+    Function CurrencyFromLanguage String sLang Returns stCurrency
+        stCurrency tCurrency
+        
+        Move (Lowercase(sLang)) to sLang
+        
+        // ToDo: could be expanded to include more languages/currencies
+        Case Begin
+            Case (sLang = "en-us")
+                Move "$"                    to tCurrency.sSymbol
+                Move "USD"                  to tCurrency.sISOCode
+                Move "US Dollar"            to tCurrency.sName
+                Case Break
+            Case (sLang = "en-gb")
+                Move "£"                    to tCurrency.sSymbol
+                Move "GBP"                  to tCurrency.sISOCode
+                Move "British Pound"        to tCurrency.sName
+                Case Break
+            Case (sLang = "en-au")
+                Move "$"                    to tCurrency.sSymbol
+                Move "AUD"                  to tCurrency.sISOCode
+                Move "Australian Dollar"    to tCurrency.sName
+                Case Break
+            Case (sLang = "en-ca")
+                Move ""                     to tCurrency.sSymbol
+                Move "CAD"                  to tCurrency.sISOCode
+                Move "Canadian Dollar"      to tCurrency.sName
+                Case Break
+            Case (sLang = "fr-ca")
+                Move "$"                    to tCurrency.sSymbol
+                Move "CAD"                  to tCurrency.sISOCode
+                Move "Canadian Dollar"      to tCurrency.sName
+                Case Break
+            Case (sLang = "en-in")
+                Move "₹"                    to tCurrency.sSymbol
+                Move "INR"                  to tCurrency.sISOCode
+                Move "Indian Rupee"         to tCurrency.sName
+                Case Break
+            Case (sLang = "en-za")
+                Move "Z"                    to tCurrency.sSymbol
+                Move "ZAR"                  to tCurrency.sISOCode
+                Move "Rand"                 to tCurrency.sName
+                Case Break
+            Case (Right(sLang, 2) = "ch")
+                Move "Fr."                  to tCurrency.sSymbol
+                Move "CHF"                  to tCurrency.sISOCode
+                Move "Swiss Franc"          to tCurrency.sName
+                Case Break
+            Case (sLang = "ja")
+                Move "¥"                    to tCurrency.sSymbol
+                Move "JPY"                  to tCurrency.sISOCode
+                Move "Yen"                  to tCurrency.sName
+                Case Break
+            Case (Left(sLang, 2) = "zh")
+                Move "¥"                    to tCurrency.sSymbol
+                Move "CNY"                  to tCurrency.sISOCode
+                Move "Yuan Renminbi"        to tCurrency.sName
+                Case Break
+            Case (sLang = "da")
+                Move "Kr."                  to tCurrency.sSymbol
+                Move "DKK"                  to tCurrency.sISOCode
+                Move "Danish Krone"         to tCurrency.sName
+                Case Break
+            Case (Left(sLang, 2) = "sv")
+                Move "SEK"                  to tCurrency.sISOCode
+                Move "Swedish Krona"        to tCurrency.sName
+                Case Break
+            Case (Left(sLang, 2) = "no")
+                Move "kr"                   to tCurrency.sSymbol
+                Move "NOK"                  to tCurrency.sISOCode
+                Move "Norwegian Krone"      to tCurrency.sName
+                Case Break
+            Case (sLang = "pt-br")
+                Move "R$"                   to tCurrency.sSymbol
+                Move "BRL"                  to tCurrency.sISOCode
+                Move "Brazilian Real"           to tCurrency.sName
+                Case Break
+        Case End
+        
+        Function_Return tCurrency
+    End_Function
+    
+End_Class

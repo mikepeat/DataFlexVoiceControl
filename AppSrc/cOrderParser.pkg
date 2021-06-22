@@ -105,7 +105,7 @@ Class cOrderParser is a cObject
         Set panPrices to anPrices
     End_Procedure
     
-    // This could be extened
+    // ToDo: This could be extened
     Function WordsToNum String sWord Returns String
         If (sWord = "one")   Function_Return "1"
         If (sWord = "two")   Function_Return "2"

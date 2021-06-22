@@ -1,6 +1,7 @@
 ﻿Use AllWebAppClasses.pkg
 Use cConnection.pkg
 Use cWebMenuItemLoadView.pkg
+Use cLocalInfo.pkg
 
 Object oApplication is a cApplication
     Object oConnection is a cConnection
@@ -141,58 +142,17 @@ Object oWebApp is a cWebApp
     { WebProperty=Client }
     Property String psCurrencySymbol "€"
     
+    Object oLocalInfo is a cLocalInfo
+    End_Object
+    
     Procedure OnInitializeLocales String sLang Integer iClientTimezoneOffsetMins
-        String sCurSym
+        stCurrency tCurr
         
-        Move "€" to sCurSym        // Default to Euro
-        Move (Lowercase(sLang)) to sLang
+        Get CurrencyFromLanguage of oLocalInfo sLang to tCurr
+        If (tCurr.sSymbol = "") ;
+            Move "€" to tCurr.sSymbol        // Default to Euro
         
-        Case Begin
-            Case (sLang = "en-us")
-                Move "$" to sCurSym
-                Case Break
-            Case (sLang = "en-gb")
-                Move "£" to sCurSym
-                Case Break
-            Case (sLang = "en-au")
-                Move "$" to sCurSym
-                Case Break
-            Case (sLang = "en-ca")
-                Move "$" to sCurSym
-                Case Break
-            Case (sLang = "fr-ca")
-                Move "$" to sCurSym
-                Case Break
-            Case (sLang = "en-in")
-                Move "₹" to sCurSym 
-                Case Break
-            Case (sLang = "en-za")
-                Move "Z" to sCurSym
-                Case Break
-            Case (Right(sLang, 2) = "ch")
-                Move "CHF" to sCurSym
-                Case Break
-            Case (sLang = "ja")
-                Move "¥" to sCurSym
-                Case Break
-            Case (Left(sLang, 2) = "zh")
-                Move "¥" to sCurSym
-                Case Break
-            Case (sLang = "da")
-                Move "Kr." to sCurSym
-                Case Break
-            Case (Left(sLang, 2) = "sv")
-                Move "kr" to sCurSym
-                Case Break
-            Case (Left(sLang, 2) = "no")
-                Move "kr" to sCurSym
-                Case Break
-            Case (sLang = "pt-br")
-                Move "R$" to sCurSym
-                Case Break
-        Case End
-        
-        WebSet psCurrencySymbol to sCurSym
+        WebSet psCurrencySymbol to tCurr.sSymbol
     End_Procedure
 
     Use SessionManager.wo

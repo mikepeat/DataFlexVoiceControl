@@ -111,7 +111,7 @@ Object oInTheBar is a cWebView
                     If bFemale ;
                         Move "Sheila" to sAddr
                     Else ;
-                        Move "Mate" to sAddr
+                        Move "mate" to sAddr
                     Case Break
                 Case ((sVoice contains "CANADA") or (sVoice contains "CANADIAN"))
                     If bFemale ;

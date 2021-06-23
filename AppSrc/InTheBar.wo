@@ -82,6 +82,7 @@ Object oInTheBar is a cWebView
             Send Speak of oSpeaker sResponse
         End
         Else Begin
+            WebSet pbEnabled of oStartBtn to False
             WebSet pbOrderReceived to False
             Send Speak of oSpeaker "I'm sorry, I didn't catch that.  Could you say it again please."
         End
@@ -316,10 +317,6 @@ Object oInTheBar is a cWebView
                 Else ;
                     Send ShowInfoBox sErr "Voice Error"
 
-                WebSet pbEnabled of oStartBtn to True
-            End_Procedure
-            
-            Procedure OnVoiceEnd
                 WebSet pbEnabled of oStartBtn to True
             End_Procedure
             

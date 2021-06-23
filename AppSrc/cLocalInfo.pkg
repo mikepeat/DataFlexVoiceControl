@@ -1,35 +1,5 @@
 ﻿Use UI
 
-// ToDo: Get working
-//#IFNDEF _struct_stSYSTEMTIME
-//    Struct stSYSTEMTIME 
-//        UShort wYear
-//        UShort wMonth
-//        UShort wDayOfWeek
-//        UShort wDay
-//        UShort wHour
-//        UShort wMinute
-//        UShort wSecond
-//        UShort wMilliseconds
-//    End_Struct
-//#ENDIF
-//
-//#IFNDEF _struct_stTIME_ZONE_INFORMATION
-//    Struct stTIME_ZONE_INFORMATION 
-//        Integer      Bias
-//        UShort[32]   StandardName
-//        stSYSTEMTIME StandardDate
-//        Integer      StandardBias
-//        UShort[32]   DaylightName
-//        stSYSTEMTIME DaylightDate
-//        Integer      DaylightBias
-//    End_Struct
-//#ENDIF
-//
-//External_Function TimeZoneInfo "GetTimeZoneInformation" Kernel32.DLL ;
-//    Address lpTimeZoneInformation ;
-//    Returns UShort
-
 #IFNDEF _struct_stCurrency
     Struct stCurrency
         String sSymbol
@@ -38,19 +8,6 @@
     End_Struct
 
 Class cLocalInfo is a cObject
-
-// ToDo: Get working
-//    Function ClientLocalTime Returns DateTime
-//        stTIME_ZONE_INFORMATION tTZInfo
-//        Address  pTZInfo
-//        UShort   usRetVal
-//        DateTime dtLocal
-//        
-//        Move (AddressOf(tTZInfo)) to pTZInfo
-//        Move (TimeZoneInfo(pTZInfo)) to usRetVal
-//        
-//        Function_Return dtLocal
-//    End_Function
 
     Function CurrencyFromLanguage String sLang Returns stCurrency
         stCurrency tCurrency
@@ -118,6 +75,11 @@ Class cLocalInfo is a cObject
                 Move "SEK"                  to tCurrency.sISOCode
                 Move "Swedish Krona"        to tCurrency.sName
                 Case Break
+            Case (Left(sLang, 2) = "is")
+                Move "kr"                   to tCurrency.sSymbol
+                Move "ISK"                  to tCurrency.sISOCode
+                Move "Iceland Krona"        to tCurrency.sName
+                Case Break
             Case (Left(sLang, 2) = "no")
                 Move "kr"                   to tCurrency.sSymbol
                 Move "NOK"                  to tCurrency.sISOCode
@@ -127,6 +89,11 @@ Class cLocalInfo is a cObject
                 Move "R$"                   to tCurrency.sSymbol
                 Move "BRL"                  to tCurrency.sISOCode
                 Move "Brazilian Real"           to tCurrency.sName
+                Case Break
+            Case (sLang = "hu")
+                Move "ft"                   to tCurrency.sSymbol
+                Move "HUF"                  to tCurrency.sISOCode
+                Move "Hungarian Forint"     to tCurrency.sName
                 Case Break
         Case End
         

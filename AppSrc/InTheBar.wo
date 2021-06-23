@@ -276,6 +276,7 @@ Object oInTheBar is a cWebView
         
             Procedure OnClick
                 Send Clear of oTranscript
+                WebSet pbEnabled of oStartBtn to True
             End_Procedure
             
         End_Object

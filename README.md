@@ -16,7 +16,7 @@ you) and cWebVoiceControl (the browser listens to you) in their two respective
 and WebVoiceControl.js.
 
 To get things to work in any given browser you may have to allow it to access
-your microphone.
+your microphone.  (And geting Safari to play is even more of a challenge!)
 
 The sample "In the bar" view lets you test out the interface.  It makes use of
 the cOrderParser class, which is a moron-level bit of AI (well, how bright do

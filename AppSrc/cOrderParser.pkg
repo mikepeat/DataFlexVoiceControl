@@ -182,8 +182,6 @@ Class cOrderParser is a cObject
                             Move "red wine" to asWords[i]
                         If (asWords[i - 1] = "white") ;
                             Move "white wine" to asWords[i]
-                        If (asWords[i - 1] = "ginger") ;
-                            Move "ginger wine" to asWords[i]
                         If (asWords[i - 1] = "elderflower") ;
                             Move "elderflower wine" to asWords[i]
                         If (asWords[i - 1] = "tonic") ;

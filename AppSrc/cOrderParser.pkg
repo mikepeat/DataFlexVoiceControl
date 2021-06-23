@@ -17,90 +17,63 @@ Use GlobalFunctionsProcedures.pkg
 Class cOrderParser is a cObject
     
     Procedure Construct_Object
-        String[] asDrinks
-        Number[] anPrices
-
         Forward Send Construct_Object
         
         Property String[] pasDrinks
         Property Number[] panPrices
 
-        Move "beer"         to asDrinks[0]
-        Move "water"        to asDrinks[1]
-        Move "tea"          to asDrinks[2]
-        Move "coffee"       to asDrinks[3]
-        Move "gin"          to asDrinks[4]
-        Move "whisky"       to asDrinks[5]
-        Move "whiskey"      to asDrinks[6]
-        Move "rum"          to asDrinks[7]
-        Move "vodka"        to asDrinks[8]
-        Move "brandy"       to asDrinks[9]
-        Move "brandie"     to asDrinks[10]
-        Move "brandy's"     to asDrinks[11]
-        Move "cognac"       to asDrinks[12]
-        Move "orange"       to asDrinks[13]
-        Move "soda"         to asDrinks[14]
-        Move "coke"         to asDrinks[15]
-        Move "lime"         to asDrinks[16]
-        Move "chip"         to asDrinks[17]
-        Move "crisp"        to asDrinks[18]
-        Move "lemonade"     to asDrinks[19]
-        Move "coke-a-cola"  to asDrinks[20]
-        Move "scotch"       to asDrinks[21]
-        Move "malt"         to asDrinks[22]
-        Move "lager"        to asDrinks[23]
-        Move "bitter"       to asDrinks[24]
-        Move "ale"          to asDrinks[25]
-        Move "wine"         to asDrinks[26]
-        Move "tonic"        to asDrinks[27]
-        Move "ginger"       to asDrinks[28]
-        Move "whiskies"     to asDrinks[29]
-        Move "rosé"         to asDrinks[30]
-        Move "champagne"    to asDrinks[31]
-        Move "cider"        to asDrinks[32]
-        Move "tomato"       to asDrinks[33]
-        Move "brandy'"      to asDrinks[34]
-        Move "guinness"     to asDrinks[35]
-        Move "guinnes"      to asDrinks[36]
-        Move "lemon"        to asDrinks[37]
+        Send AddDrink "beer"         3.80
+        Send AddDrink "water"        0   
+        Send AddDrink "tea"          3.50
+        Send AddDrink "coffee"       4.15
+        Send AddDrink "gin"          5.30
+        Send AddDrink "whisky"       5.90
+        Send AddDrink "whiskey"      5.90
+        Send AddDrink "rum"          4.90
+        Send AddDrink "vodka"        4.50
+        Send AddDrink "brandy"       6.10
+        Send AddDrink "brandie"      6.10
+        Send AddDrink "brandy's"     6.10
+        Send AddDrink "cognac"       7.20
+        Send AddDrink "orange"       0.40
+        Send AddDrink "soda"         0.35
+        Send AddDrink "coke"         0.60
+        Send AddDrink "lime"         0.20
+        Send AddDrink "chip"         0.65
+        Send AddDrink "crisp"        0.65
+        Send AddDrink "lemonade"     0.30
+        Send AddDrink "coke-a-cola"  0.70
+        Send AddDrink "scotch"       5.90
+        Send AddDrink "malt"         7.10
+        Send AddDrink "lager"        3.90
+        Send AddDrink "bitter"       3.95
+        Send AddDrink "ale"          4.10
+        Send AddDrink "wine"         0.80
+        Send AddDrink "tonic"        0.85
+        Send AddDrink "ginger"       0.55
+        Send AddDrink "whiskies"     5.90
+        Send AddDrink "rosé"         4.15
+        Send AddDrink "champagne"    6.20
+        Send AddDrink "cider"        3.10
+        Send AddDrink "tomato"       0.50
+        Send AddDrink "brandy'"      6.10
+        Send AddDrink "guinness"     4.15
+        Send AddDrink "lemon"        0.45
+        Send AddDrink "proseco"      4.90
+        Send AddDrink "cava"         4.50
+    End_Procedure
+    
+    Procedure AddDrink String sName Number nPrice
+        String[] asDrinks
+        Number[] anPrices
+        Integer i
         
-        Move 3.80           to anPrices[0]
-        Move 0              to anPrices[1]
-        Move 3.50           to anPrices[2]
-        Move 4.15           to anPrices[3]
-        Move 5.30           to anPrices[4]
-        Move 5.90           to anPrices[5]
-        Move 5.90           to anPrices[6]
-        Move 4.90           to anPrices[7]
-        Move 4.50           to anPrices[8]
-        Move 6.10           to anPrices[10]
-        Move 6.10           to anPrices[11]
-        Move 7.20           to anPrices[12]
-        Move 0.30           to anPrices[13]
-        Move 0.40           to anPrices[14]
-        Move 0.95           to anPrices[15]
-        Move 0.25           to anPrices[16]
-        Move 0.75           to anPrices[17]
-        Move 0.75           to anPrices[18]
-        Move 0.80           to anPrices[19]
-        Move 0.95           to anPrices[20]
-        Move 5.90           to anPrices[21]
-        Move 7.95           to anPrices[22]
-        Move 3.70           to anPrices[23]
-        Move 3.90           to anPrices[24]
-        Move 3.95           to anPrices[25]
-        Move 4.10           to anPrices[26]
-        Move 0.80           to anPrices[27]
-        Move 0.85           to anPrices[28]
-        Move 5.90           to anPrices[29]
-        Move 4.10           to anPrices[30]
-        Move 5.40           to anPrices[31]
-        Move 3.20           to anPrices[32]
-        Move 0.50           to anPrices[33]
-        Move 6.10           to anPrices[34]
-        Move 4.15           to anPrices[35]
-        Move 4.15           to anPrices[36]
-        Move 0.80           to anPrices[37]
+        Get pasDrinks to asDrinks
+        Get panPrices to anPrices
+        
+        Move (SizeOfArray(asDrinks)) to i
+        Move sName  to asDrinks[i]
+        Move nPrice to anPrices[i]
         
         Set pasDrinks to asDrinks
         Set panPrices to anPrices
@@ -168,11 +141,14 @@ Class cOrderParser is a cObject
                 // Remove trailing comma if present
                 If (Right(sItem, 1) = ",") ;
                     Move (Left(sItem, (Length(sItem) - 1))) to sItem
-                // Remove training "s" if present
-                If (Right(sItem, 1) = "s") ;
-                    Move (Left(sItem, (Length(sItem) - 1))) to sItem
                     
                 Move (SearchArray(sItem, asDrinks)) to iIdx
+                
+                // If failed, try without any trailing "s"
+                If ((iIdx = -1) and (Right(sItem, 1) = "s")) Begin
+                    Move (Left(sItem, (Length(sItem) - 1))) to sItem
+                    Move (SearchArray(sItem, asDrinks))     to iIdx
+                End
                 
                 If (iIdx > -1) Begin
                     

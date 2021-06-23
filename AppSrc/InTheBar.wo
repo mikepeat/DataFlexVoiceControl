@@ -310,7 +310,12 @@ Object oInTheBar is a cWebView
             End_Procedure
             
             Procedure OnVoiceError String sErr
-                Send ShowInfoBox sErr "Voice Error"
+                
+                If (Lowercase(sErr) = "no-speech") ;
+                    Send ShowInfoBox "We didn't hear you say anything! Try again" "Voice Error"
+                Else ;
+                    Send ShowInfoBox sErr "Voice Error"
+
                 WebSet pbEnabled of oStartBtn to True
             End_Procedure
             

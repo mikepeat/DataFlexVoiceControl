@@ -4,7 +4,7 @@ Voice input and output for DataFlex WebApps.
 Note: all files are DataFlex 20.0, so Unicode (UTF-8).
 
 ATM, this is limited to use in Chrome, Edge and Safari (and Safari puts up a 
-bit of a fight! <g>) desktop browsers, since they are the only ones which seem
+bit of a fight! 😀) desktop browsers, since they are the only ones which seem
 support the required speech recognition API.  AFAICS, Firefox, Opera and Brave
 do not, nor do any mobile browsers I have tried so far.  Brave *should* work,
 but ATM the voice input seems to end as soon as it starts, so doesn't.
@@ -20,11 +20,11 @@ your microphone.  (And geting Safari to play is even more of a challenge!)
 
 The sample "In the bar" view lets you test out the interface.  It makes use of
 the cOrderParser class, which is a moron-level bit of AI (well, how bright do
-you have to be to work behind a bar? <g>  Not really a challenger to Jarvis or
-SkyNet, I'm afraid!) - it thinks gin and tonic are two separate drinks! ;-)
+you have to be to work behind a bar? 😀  Not really a challenger to Jarvis or
+SkyNet, I'm afraid!) - it thinks gin and tonic are two separate drinks! 😉
 
 It offers a choice of bartenders (different in the different browsers),
-although for the best bar experience I'd stick to the English speakers! ;-)
+although for the best bar experience I'd stick to the English speakers! 😉
 
 For the prices for your round of drinks in the currency of your choice, you
 will need to get your browser to send the appropriate language code (en-US, 

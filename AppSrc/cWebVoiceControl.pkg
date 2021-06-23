@@ -18,9 +18,9 @@ Class cWebVoiceControl is a cWebBaseControl
         
         // serverOn{Event} settings
         { WebProperty=Client }
-        Property Boolean pbServerOnStart        False
+        Property Boolean pbServerOnVoiceStart   False
         { WebProperty=Client }
-        Property Boolean pbServerOnEnd          False
+        Property Boolean pbServerOnVoiceEnd     False
         { WebProperty=Client }
         Property Boolean pbServerOnAudioStart   False
         { WebProperty=Client }

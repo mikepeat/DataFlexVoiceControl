@@ -26,8 +26,8 @@ uig.WebVoiceControl = function WebVoiceControl(sName, oParent){
     this.prop(df.tBool,   "pbStopOnResult", false)
 
     // ServerOnXxxx settings
-    this.prop(df.tBool, "pbServerOnStart", false);
-    this.prop(df.tBool, "pbServerOnEnd", false);
+    this.prop(df.tBool, "pbServerOnVoiceStart", false);
+    this.prop(df.tBool, "pbServerOnVoiceEnd", false);
     this.prop(df.tBool, "pbServerOnAudioStart", false);
     this.prop(df.tBool, "pbServerOnAudioEnd", false);
     this.prop(df.tBool, "pbServerOnError", false);
@@ -76,7 +76,7 @@ startListening : function(){
             }, that.listenFor);
         }
 
-        if (that.pbServerOnStart){
+        if (that.pbServerOnVoiceStart){
             that.serverAction("OnVoiceStart");
         }
     }
@@ -85,7 +85,7 @@ startListening : function(){
         recognition = null;
         that._bListening = false;
 
-        if (that.pbServerOnEnd){
+        if (that.pbServerOnVoiceEnd){
             that.serverAction("OnVoiceEnd");
         }
     }

@@ -302,7 +302,6 @@ Object oInTheBar is a cWebView
 
         Object oListener is a cWebVoiceControl
             Set pbStopOnResult  to True
-            Set pbServerOnEnd   to True
             Set pbServerOnError to True
             
             Procedure OnVoiceReceived String sTranscript

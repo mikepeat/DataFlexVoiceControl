@@ -23,7 +23,8 @@ uig.WebVoiceControl = function WebVoiceControl(sName, oParent){
     this.prop(df.tBool,   "pbInterimResults", false);
     this.prop(df.tString, "psLanguage", "");
     this.prop(df.tInt,    "piMaxAlternatives", 1);
-    this.prop(df.tBool,   "pbStopOnResult", false)
+    this.prop(df.tBool,   "pbStopOnResult", false);
+    this.prop(df.tBool,   "pbContinuous", false);
 
     // ServerOnXxxx settings
     this.prop(df.tBool, "pbServerOnVoiceStart", false);
@@ -61,7 +62,7 @@ startListening : function(){
     }
 
     // Configure speech recognition:
-    recognition.continuous      = !this.piListenFor;  // 0 = continuous; anything else has a limit
+    recognition.continuous      = this.pbContinuous;
     recognition.interimResults  = this.pbInterimResults;
     recognition.maxAlternatives = this.piMaxAlternatives;
     recognition.lang            = this.psLanguage;

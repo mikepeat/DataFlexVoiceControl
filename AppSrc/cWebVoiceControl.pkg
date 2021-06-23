@@ -8,13 +8,15 @@ Class cWebVoiceControl is a cWebBaseControl
         { WebProperty=Client }
         Property Integer piListenFor 0  // milliseconds: 1000 = 1 second; 0 = continuous
         { WebProperty=Client }
-        Property Boolean pbInterimResults False
+        Property Boolean pbInterimResults   False
         { WebProperty=Client }
-        Property Integer piMaxAlternatives 1
+        Property Integer piMaxAlternatives  1
         { WebProperty=Client }
-        Property String  psLanguage ""
+        Property String  psLanguage         ""
         { WebProperty=Client }
-        Property Boolean pbStopOnResult False
+        Property Boolean pbStopOnResult     False
+        { WebProperty=Client }
+        Property Boolean pbContinuous       False
         
         // serverOn{Event} settings
         { WebProperty=Client }
